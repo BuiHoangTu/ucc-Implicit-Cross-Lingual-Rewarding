@@ -32,7 +32,7 @@ checkpoint_dir=${5:-"/public/zhangjiajun/PretrainModels/princeton-nlp/Llama-3-Ba
 # ==============================================
 if echo "$checkpoint_dir" | grep -qi "llama2"; then
     template="llama2"
-elif echo "$checkpoint_dir" | grep -qi "llama3"; then
+elif echo "$checkpoint_dir" | grep -Eqi "llama[-_]?3"; then
     template="llama3"
 elif echo "$checkpoint_dir" | grep -qi "Llama-3-Base"; then
     template="llama3_without_system_prompt"
@@ -83,7 +83,7 @@ ${python_env} -u utils/batch_inference.py \
     --checkpoint_dir "${checkpoint_dir}" \
     --temperature "${temperature}" \
     --max_tokens 2400 \
-    --langs "${type}" \
+    --langs ${type} \
     --seed 42 \
     --template "${template}" \
     --n_generate_sample "${sample_num}" \

@@ -19,13 +19,13 @@
 # ==============================================
 
 # Set the working directory for the project
-export code_dir=/public/zhangjiajun/wyang/workspace/release/code/Implicit-Cross-Lingual-Rewarding
+export code_dir=./
 # Specify the Python environment
-export python_env=/public/zhangjiajun/anaconda3/envs/qwq/bin/python
+export python_env=python
 
 
 # Set CUDA device (default: GPU 0)
-export CUDA_VISIBLE_DEVICES=${1:-"0"}
+# export CUDA_VISIBLE_DEVICES=${1:-"0"}
 
 # Define key parameters
 languages=${2:-"es"}  # Target languages
@@ -123,7 +123,7 @@ ${python_env} utils/compute_reward_score.py \
     --template "${template}" \
     --data_path "${data_path}"  \
     --batch_size 3 \
-    --langs "${languages}" \
+    --langs ${languages} \
     --output_path "${output_path}" \
     --instruction_key "${instruction_key}" \
     --cal_key "${cal_key[@]}" \

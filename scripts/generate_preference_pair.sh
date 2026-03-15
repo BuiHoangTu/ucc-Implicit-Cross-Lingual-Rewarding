@@ -20,10 +20,10 @@
 # ==============================================
 
 # Specify the Python environment
-export python_env=/public/zhangjiajun/anaconda3/envs/qwq/bin/python
+export python_env=python
 
 # Define parameters
-code_dir=${1:-"/public/zhangjiajun/wyang/workspace/release/code/Implicit-Cross-Lingual-Rewarding"}
+code_dir=${1:-"./"}
 
 # Parse langs as an array using `_` as the separator
 IFS='_' read -r -a langs <<< "${2:-"en_es"}"  # Correctly split string into an array
@@ -54,7 +54,7 @@ echo "=========================================="
 
 ${python_env} -u utils/generate_preference_pair.py \
     --code_dir "${code_dir}" \
-    --langs "${langs[@]}" \
+    --langs ${langs[@]} \
     --mode "${mode}" \
     --dpo_model "${dpo_model}" \
     --ref_model "${ref_model}" \

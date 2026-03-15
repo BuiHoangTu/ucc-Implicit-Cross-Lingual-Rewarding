@@ -2,13 +2,13 @@
 
 #usage: batch_inference.sh <gpu_id> <type> <split>
 export TOKENIZERS_PARALLELISM=false
-export CUDA_VISIBLE_DEVICES="${1:-0}"
+# export CUDA_VISIBLE_DEVICES="${1:-0}"
 
 
 # Set the working directory for the project
-export code_dir=/public/zhangjiajun/wyang/workspace/release/code/Implicit-Cross-Lingual-Rewarding
+export code_dir=./
 # Specify the Python environment
-export python_env=/public/zhangjiajun/anaconda3/envs/qwq/bin/python
+export python_env=python
 
 
 src=${2:-"en"}

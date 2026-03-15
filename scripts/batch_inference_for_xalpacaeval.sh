@@ -16,15 +16,15 @@
 # ==============================================
 
 # Set the working directory for the project
-export code_dir=/public/zhangjiajun/wyang/workspace/release/code/Implicit-Cross-Lingual-Rewarding
+export code_dir=./
 # Specify the Python environment
-export python_env=/public/zhangjiajun/anaconda3/envs/qwq/bin/python
+export python_env=python
 
 # Disable parallel tokenization to avoid issues
 export TOKENIZERS_PARALLELISM=false
 
 # Set CUDA device (default: GPU 0)
-export CUDA_VISIBLE_DEVICES="${1:-0}"
+# export CUDA_VISIBLE_DEVICES="${1:-0}"
 
 # Inference parameters
 type=${2:-"en"}  # Target language type
@@ -99,7 +99,7 @@ ${python_env} -u utils/batch_inference.py \
     --checkpoint_dir "${checkpoint_dir}" \
     --temperature "${temperature}" \
     --max_tokens 2048 \
-    --langs "${type}" \
+    --langs ${type} \
     --seed 42 \
     --template "${template}" \
     --n_generate_sample "${sample_num}" \
