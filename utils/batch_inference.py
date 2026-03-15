@@ -246,7 +246,7 @@ def main(args):
                 os.makedirs(os.path.dirname(args.save_file), exist_ok=True)
             save_file = args.save_file
         
-        with open(save_file, "w") as writer:
+        with open(save_file, "w", encoding="utf-8") as writer:
             for cur_data in tqdm(batch(data, args.num_per_inference), desc="Main Processing"):
                 # load question
                 questions = []
