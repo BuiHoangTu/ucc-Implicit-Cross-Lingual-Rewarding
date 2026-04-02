@@ -177,7 +177,6 @@ def main(args):
     sampling_params = SamplingParams(
         top_k=args.top_k,
         best_of=args.best_of,
-        use_beam_search=args.use_beam_search,
         temperature=args.temperature,
         top_p=args.top_p,
         max_tokens=args.max_tokens,

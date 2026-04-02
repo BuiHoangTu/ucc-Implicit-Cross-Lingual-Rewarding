@@ -13,10 +13,11 @@
 #   - dataset: "x-alpacaeval"
 #   - mode: "M0"
 #   - checkpoint_dir: "/public/zhangjiajun/PretrainModels/princeton-nlp/Llama-3-Base-8B-SFT-DPO"
+#   - save_dir: "${code_dir}/process_data/inference/${mode}/${checkpoint_dir##*/}/multilingual_generate/${dataset}"
 # ==============================================
 
 # Set the working directory for the project
-export code_dir=./
+export code_dir=$(pwd)
 # Specify the Python environment
 export python_env=python
 
@@ -28,7 +29,7 @@ export TOKENIZERS_PARALLELISM=false
 
 # Inference parameters
 type=${2:-"en"}  # Target language type
-dataset=${3:-"x-alpacaeval"}  # Dataset path
+dataset="x-alpacaeval"  # Dataset path
 mode=${4:-"M0"}  # Training mode
 checkpoint_dir=${5:-"/public/zhangjiajun/PretrainModels/princeton-nlp/Llama-3-Base-8B-SFT-DPO"}  # Model checkpoint path
 
@@ -37,7 +38,7 @@ checkpoint_dir=${5:-"/public/zhangjiajun/PretrainModels/princeton-nlp/Llama-3-Ba
 # ==============================================
 if echo "$checkpoint_dir" | grep -qi "llama2"; then
     template="llama2"
-elif echo "$checkpoint_dir" | grep -qi "llama3"; then
+elif echo "$checkpoint_dir" | grep -Eqi "llama[-_]?3"; then
     template="llama3"
 elif echo "$checkpoint_dir" | grep -qi "Llama-3-Base"; then
     template="llama3_without_system_prompt"
@@ -61,22 +62,23 @@ fi
 # ==============================================
 # Set Inference Parameters
 # ==============================================
-save_dir="${code_dir}/process_data/inference/${mode}/${checkpoint_dir##*/}/multilingual_generate/${dataset}"
+save_dir=${6:-"${code_dir}/process_data/inference/${mode}/${checkpoint_dir##*/}/multilingual_generate/${dataset}"}
 
 
 
-if echo "$checkpoint_dir" | grep -q "en_bn_sw_th_langs"; then
-    type=("en" "bn" "sw" "th" "zh")
-else
-    type=("en" "es" "ru" "de" "fr" "zh")
-fi
 
-temperature=0.6
-top_p=0.9
+# if echo "$checkpoint_dir" | grep -q "en_bn_sw_th_langs"; then
+#     type=("en" "bn" "sw" "th" "zh")
+# else
+#     type=("en" "es" "ru" "de" "fr" "zh")
+# fi
+
+temperature=0.0
+top_p=1
 sample_num=1
 
 
-question_path="${code_dir}/data/${dataset}"
+question_path="${code_dir}/data/${dataset}/data"
 
 # ==============================================
 # Run Batch Inference
@@ -92,11 +94,11 @@ echo "  - Template: ${template}"
 echo "  - Save Directory: ${save_dir}"
 echo "=========================================="
 
-${python_env} -u utils/batch_inference.py \
+python -u utils/batch_inference.py \
     --question_path "${question_path}" \
     --question_key "instruction" \
     --save_dir "${save_dir}" \
-    --checkpoint_dir "${checkpoint_dir}" \
+    --checkpoint_dir ${checkpoint_dir} \
     --temperature "${temperature}" \
     --max_tokens 2048 \
     --langs ${type} \
